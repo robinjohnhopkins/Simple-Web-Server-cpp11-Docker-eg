@@ -1,4 +1,5 @@
-**_This project has moved to https://gitlab.com/eidheim/Simple-Web-Server._**
+** Original project: https://gitlab.com/eidheim/Simple-Web-Server._**
+** added Dockerfile **
 
 Simple-Web-Server
 =================
