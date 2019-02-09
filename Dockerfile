@@ -26,7 +26,7 @@ CMD ["./build/http_examples"]
 #this builds the image from the Dockerfile. -t specifies ‘name:tag'
 #docker build -t  helloworld:v1 .
 
-# this runs the image mapping internal_port:external_port
+# this runs the image mapping external_port:internal_docker_port
 #docker run -p 8080:8080  -it --rm --name HelloWorld helloworld:v1
 
 # Direct your favorite browser to for instance http://localhost:8080/
