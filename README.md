@@ -71,12 +71,16 @@ docker build -t  helloworld:v1 .
 docker run -p 8080:8080  -it --rm --name HelloWorld helloworld:v1
 
 ### use browser to access running container functionality
-Direct your favorite browser to for instance 
+Direct your favorite browser to, for example:
+
 http://localhost:8080/          maps to web/index.html
+
 http://localhost:8080/test.html maps to web/test.html
 
 REST GET /match/[number]   sample REST content of cpp sample
+
 e.g.
+
 http://localhost:8080/match/1234
 
 otherwise static content from /web e.g. / returns web/index.html
@@ -86,15 +90,21 @@ otherwise static content from /web e.g. / returns web/index.html
 
 ## Kubernetes
 ### Rename docker image
+
 cd .../Simple-Web-Server
+
 above we named the image helloworld:v1 - next we add another tag to the image id then remove the original tag
+
 docker tag helloworld:v1 <your_docker_hub_name>/cpp11webexample:v1
+
 docker rmi helloworld:v1
+
 docker push <your_docker_hub_name>/cpp11webexample:v1
 
 image is now on https://hub.docker.com/
 
 ### install kubernetes
+```
 options:
 	desktop
 		docker desktop for mac
@@ -102,8 +112,10 @@ options:
 	kubeadm
 	from scratch
 	cloud scenarios - PaaS IaaS options
+```
 
 #### Installing Minikube on Mac
+```
 brew install kubectl
 kubectl version --client
 brew cask install minikube
@@ -117,22 +129,29 @@ minikube stop
 minikube delete
 minikube start --vm-driver=xhyve --kubernetes-version="v1.6.0"
 kubectl get nodes
+```
 
 #### get mapped tcp ports on mac
+```
 netstat -ap tcp
+```
 
 ## kubernetes commands
+```
 $ kubectl get nodes
+
 NAME       STATUS    ROLES     AGE       VERSION
 minikube   Ready     master    6h        v1.13.2
 
 $ kubectl describe nodes
+
 Name:               minikube
 Roles:              master
 … 
 Addresses:
   InternalIP:  192.xx.xx.xx
   Hostname:    minikube
+```
 
 Info: when a port is exposed externally, 192.xx.xx.xx above is the external ip
 
