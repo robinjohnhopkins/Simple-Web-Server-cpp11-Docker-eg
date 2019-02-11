@@ -1,5 +1,8 @@
-** Original project: https://gitlab.com/eidheim/Simple-Web-Server._**
+** Original project: https://gitlab.com/eidheim/Simple-Web-Server **
+
 ** added Dockerfile **
+
+** added Kubernetes minikube notes **
 
 Simple-Web-Server
 =================
@@ -65,14 +68,15 @@ CMD ["./build/http_examples"]
 </code>
 
 ### builds the image from the Dockerfile. -t specifies ‘name:tag'
-docker build -t  helloworld:v1 .
+`docker build -t  helloworld:v1 .`
 
 ### runs the image mapping external_port:internal_docker_port
-docker run -p 8080:8080  -it --rm --name HelloWorld helloworld:v1
+`docker run -p 8080:8080  -it --rm --name HelloWorld helloworld:v1`
 
 ### use browser to access running container functionality
 Direct your favorite browser to, for example:
 
+```
 http://localhost:8080/          maps to web/index.html
 
 http://localhost:8080/test.html maps to web/test.html
@@ -86,20 +90,23 @@ http://localhost:8080/match/1234
 otherwise static content from /web e.g. / returns web/index.html
   GET-example simulating heavy work in a separate thread
     server.resource["^/work$"]["GET"]
-
+```
 
 ## Kubernetes
 ### Rename docker image
-
+```
 cd .../Simple-Web-Server
+```
 
 above we named the image helloworld:v1 - next we add another tag to the image id then remove the original tag
 
+```
 docker tag helloworld:v1 <your_docker_hub_name>/cpp11webexample:v1
 
 docker rmi helloworld:v1
 
 docker push <your_docker_hub_name>/cpp11webexample:v1
+```
 
 image is now on https://hub.docker.com/
 
