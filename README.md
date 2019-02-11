@@ -155,15 +155,20 @@ Addresses:
 
 Info: when a port is exposed externally, 192.xx.xx.xx above is the external ip
 
-### The following commands get the current list of Services and then delete the Service called "hello-svc"
+#### The following commands get the current list of Services and then delete the Service called "hello-svc"
+```
 $ kubectl get svc
 $ kubectl delete svc hello-svc
+```
 
-### The following commands list the "app" label attached to all running Pods and then print the contents of the "svc.yml" manifest file to the screen
+#### The following commands list the "app" label attached to all running Pods and then print the contents of the "svc.yml" manifest file to the screen
+```
 $ kubectl describe pods | grep app
 $ cat svc.yml
+```
 
-### The following command deploys a new Service from the "svc.yml". The YAML file is shown at the bottom of this document
+#### The following command deploys a new Service from the "svc.yml". The YAML file is shown at the bottom of this document
+```
 $ kubectl create -f svc.yml
 
 $ kubectl get svc
@@ -172,14 +177,18 @@ cpp11webexample-svc   NodePort    10.99.152.22   <none>        8080:30001/TCP   
 kubernetes            ClusterIP   10.96.0.1      <none>        443/TCP          10d
 
 $ kubectl describe svc/cpp11webexample-svc
+```
 
-### create deployment from file
+#### create deployment from file
+```
 $ kubectl apply -f deploy.yml --record					# —record important for rollout history
+```
 
-### test app in browser
+#### test app in browser
 http://192.xx.xx.xx:30001/ 
 
-### additional kubernetes
+#### additional kubernetes commands
+```
 kubectl get all
 kubectl delete  svc/hello-svc
 kubectl get ep -o json
@@ -197,10 +206,10 @@ kubectl describe deploy hello-deploy
 kubectl rollout undo deployment hello-deploy --to-revision=1
 kubectl get deploy
 kubectl rollout status deployments hello-deploy
+```
 
-
-## Not needed - The Replicaton Controller YAML file can be used to run up multiple instances
-
+#### Not needed - The Replicaton Controller YAML file can be used to run up multiple instances
+```
 kubectl get pods -o wide
 kubectl get pods/hello-pod
 kubectl get pods --all-namespaces
@@ -221,11 +230,13 @@ kubectl cluster-info
 kubectl proxy
 	serves son api in browser
 	http://127.0.0.1:8001/
+```
 
 ### minikube dashboard
 ran the following which auto invoked the dashboard in a browser!
+```
 minikube dashboard
-
+```
 
 ### Installing Minikube on Windows 10
 #####Get the kubectl.exe binary from this URL and copy it into your %PATH%
@@ -233,9 +244,10 @@ https://storage.googleapis.com/kubernetes-release/release/v1.6.0/bin/windows/amd
 
 ##### Get the Minikube installer from GitHub
 https://github.com/kubernetes/minikube/releases
+
 Run the installer
 
-
+```
 minikube version
 minikube start --vm-driver=hyperv --kubernetes-version="v1.6.0"
 
@@ -243,28 +255,37 @@ kubectl get nodes
 
 minikube
 minikube dashboard
-
+```
 
 ###  K8s on AWS using kops
+```
 dig NS k8s.tech-force-one.com
+```
 
-# Install kubectl on Mac
+#### Install kubectl on Mac
+```
 brew install kubectl
+```
 
-# Install latest release of kubectl on Linux
+#### Install latest release of kubectl on Linux
+```
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
 kubectl
+```
 
 
-#Install "kops" on Linux
+#### Install "kops" on Linux
+```
 curl -LO https://github.com/kubernetes/kops/releases/download/1.5.3/kops-linux-amd64
 chmod +x kops-linux-amd64
 mv kops-linux-amd64 /usr/local/bin/kops
+```
 
-
-# Install and configure the AWS CLI on Linux     
+#### Install and configure the AWS CLI on Linux     
+```
 sudo apt-get install awscli
 aws configure
 
@@ -286,9 +307,10 @@ kops validate cluster
 kubectl get nodes
 
 kops delete cluster --name=cluster-1.k8s.tech-force-one.com --yes
-
+```
 
 ###  Manual install
+```
 apt-get update && apt-get install -y apt-transport-https
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
@@ -315,4 +337,4 @@ kubectl get nodes
 kubectl get pods --all-namespaces
 
 kubectl get nodes
-
+```
