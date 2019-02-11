@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cpp11webexample-pod
+spec:
+  containers:
+    - name: cpp11webexample-ctr
+      image: robinjohnhopkins/cpp11webexample:v1
+      ports:
+        - containerPort: 8080

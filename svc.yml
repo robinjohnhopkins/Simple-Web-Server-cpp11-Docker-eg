@@ -1,0 +1,15 @@
+### The following is the "svc.yml" file used in the module
+apiVersion: v1
+kind: Service
+metadata:
+  name: cpp11webexample-svc
+  labels:
+    app: cpp11webexample
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      nodePort: 30001
+      protocol: TCP
+  selector:
+    app: cpp11webexample

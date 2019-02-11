@@ -56,3 +56,150 @@ Run the server and client examples: `./build/https_examples`
 
 Direct your favorite browser to for instance https://localhost:8080/
 
+## Docker
+use Dockerfile
+If you want to use https then you can alter the CMD option in Dockerfile to use https:
+CMD ["./build/http_examples"]
+
+### builds the image from the Dockerfile. -t specifies ‘name:tag'
+docker build -t  helloworld:v1 .
+
+### runs the image mapping external_port:internal_docker_port
+docker run -p 8080:8080  -it --rm --name HelloWorld helloworld:v1
+
+### use browser to access running container functionality
+Direct your favorite browser to for instance 
+http://localhost:8080/          maps to web/index.html
+http://localhost:8080/test.html maps to web/test.html
+
+REST GET /match/[number]   sample REST content of cpp sample
+e.g.
+http://localhost:8080/match/1234
+
+otherwise static content from /web e.g. / returns web/index.html
+  GET-example simulating heavy work in a separate thread
+    server.resource["^/work$"]["GET"]
+
+
+## Kubernetes
+### Rename docker image
+cd .../Simple-Web-Server
+above we named the image helloworld:v1 - next we add another tag to the image id then remove the original tag
+docker tag helloworld:v1 <your_docker_hub_name>/cpp11webexample:v1
+docker rmi helloworld:v1
+docker push <your_docker_hub_name>/cpp11webexample:v1
+
+image is now on https://hub.docker.com/
+
+### install kubernetes
+options:
+	desktop
+		docker desktop for mac
+		minikube - this is what I did - see Nigel Poulton ‘getting started with Kubernetes’ pluralsight
+	kubeadm
+	from scratch
+	cloud scenarios - PaaS IaaS options
+
+#### Installing Minikube on Mac
+brew install kubectl
+kubectl version --client
+brew cask install minikube
+brew install docker-machine-driver-xhyve
+sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+minikube start --vm-driver=xhyve
+kubectl config current-context
+kubectl get nodes
+minikube stop
+minikube delete
+minikube start --vm-driver=xhyve --kubernetes-version="v1.6.0"
+kubectl get nodes
+
+#### get mapped tcp ports on mac
+netstat -ap tcp
+
+## kubernetes commands
+$ kubectl get nodes
+NAME       STATUS    ROLES     AGE       VERSION
+minikube   Ready     master    6h        v1.13.2
+
+$ kubectl describe nodes
+Name:               minikube
+Roles:              master
+… 
+Addresses:
+  InternalIP:  192.xx.xx.xx
+  Hostname:    minikube
+
+Info: when a port is exposed externally, 192.xx.xx.xx above is the external ip
+
+### The following commands get the current list of Services and then delete the Service called "hello-svc"
+$ kubectl get svc
+$ kubectl delete svc hello-svc
+
+### The following commands list the "app" label attached to all running Pods and then print the contents of the "svc.yml" manifest file to the screen
+$ kubectl describe pods | grep app
+$ cat svc.yml
+
+### The following command deploys a new Service from the "svc.yml". The YAML file is shown at the bottom of this document
+$ kubectl create -f svc.yml
+
+$ kubectl get svc
+NAME                  TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+cpp11webexample-svc   NodePort    10.99.152.22   <none>        8080:30001/TCP   7d
+kubernetes            ClusterIP   10.96.0.1      <none>        443/TCP          10d
+
+$ kubectl describe svc/cpp11webexample-svc
+
+### create deployment from file
+$ kubectl apply -f deploy.yml --record					# —record important for rollout history
+
+### test app in browser
+http://192.xx.xx.xx:30001/ 
+
+### additional kubernetes
+kubectl get all
+kubectl delete  svc/hello-svc
+kubectl get ep -o json
+kubectl get ep -o yaml
+kubectl delete rc hello-rc			# gets rid of pods as well - show as Terminating, then gone
+kubectl get pods
+kubectl describe deploy hello-deploy
+kubectl get rs
+kubectl describe rs 
+kubectl rollout status deployments hello-deploy
+kubectl get deploy hello-deploy
+kubectl rollout history deployments hello-deploy
+kubectl get rs
+kubectl describe deploy hello-deploy
+kubectl rollout undo deployment hello-deploy --to-revision=1
+kubectl get deploy
+kubectl rollout status deployments hello-deploy
+
+
+## Not needed - The Replicaton Controller YAML file can be used to run up multiple instances
+
+kubectl get pods -o wide
+kubectl get pods/hello-pod
+kubectl get pods --all-namespaces
+
+kubectl delete pods/hello-pod
+
+kubectl create -f rc.yml
+kubectl get rc -o wide
+kubectl describe rc
+kubectl apply -f rc.yml
+
+kubectl get rc
+kubectl get pods
+
+kubectl status
+kubectl cluster-info
+
+kubectl proxy
+	serves son api in browser
+	http://127.0.0.1:8001/
+
+### minikube dashboard
+ran the following which auto invoked the dashboard in a browser!
+minikube dashboard

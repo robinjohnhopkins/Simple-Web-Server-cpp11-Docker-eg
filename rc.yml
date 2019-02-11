@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: cpp11webexample-rc
+spec:
+  replicas: 1
+  selector:
+    app: cpp11webexample
+  template:
+    metadata:
+      labels:
+        app: cpp11webexample
+    spec:
+      containers:
+        - name: cpp11webexample-ctr
+          image: robinjohnhopkins/cpp11webexample:v1
+          ports:
+            - containerPort: 8080

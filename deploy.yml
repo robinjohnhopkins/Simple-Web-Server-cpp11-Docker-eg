@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cpp11web-deploy
+spec:
+  replicas: 1
+  minReadySeconds: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: cpp11webexample
+    spec:
+      containers:
+        - name: cpp11web-pod
+          image: robinjohnhopkins/cpp11webexample:v1
+          ports:
+            - containerPort: 8080
