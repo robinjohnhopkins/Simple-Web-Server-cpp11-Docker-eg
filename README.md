@@ -203,3 +203,94 @@ kubectl proxy
 ### minikube dashboard
 ran the following which auto invoked the dashboard in a browser!
 minikube dashboard
+
+
+### Installing Minikube on Windows 10
+#####Get the kubectl.exe binary from this URL and copy it into your %PATH%
+https://storage.googleapis.com/kubernetes-release/release/v1.6.0/bin/windows/amd64/kubectl.exe
+
+##### Get the Minikube installer from GitHub
+https://github.com/kubernetes/minikube/releases
+Run the installer
+
+
+minikube version
+minikube start --vm-driver=hyperv --kubernetes-version="v1.6.0"
+
+kubectl get nodes
+
+minikube
+minikube dashboard
+
+
+###  K8s on AWS using kops
+dig NS k8s.tech-force-one.com
+
+# Install kubectl on Mac
+brew install kubectl
+
+# Install latest release of kubectl on Linux
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+kubectl
+
+
+#Install "kops" on Linux
+curl -LO https://github.com/kubernetes/kops/releases/download/1.5.3/kops-linux-amd64
+chmod +x kops-linux-amd64
+mv kops-linux-amd64 /usr/local/bin/kops
+
+
+# Install and configure the AWS CLI on Linux     
+sudo apt-get install awscli
+aws configure
+
+# Create and then list a new S3 bucket
+aws s3 mb s3://cluster-1.k8s.tech-force-one.com
+aws s3 ls | grep k8s
+
+export KOPS_STATE_STORE=s3://cluster-1.k8s.tech-force-one.com    
+cp ~/.ssh/authorized_keys ~/.ssh/id_rsa.pub
+
+kops create cluster \
+ --cloud=aws --zones=eu-west-1 \
+ --dns-zone=k8s.tech-force-one.com \
+ --name cluster-1.k8s.tech-force-one.com  --yes
+
+ 
+kops validate cluster
+
+kubectl get nodes
+
+kops delete cluster --name=cluster-1.k8s.tech-force-one.com --yes
+
+
+###  Manual install
+apt-get update && apt-get install -y apt-transport-https
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+apt-get update
+
+apt-get install -y docker.io kubeadm kubectl kubelet kubernetes-cni
+
+kubeadm init
+
+sudo cp /etc/kubernetes/admin.conf $HOME/
+sudo chown $(id -u):$(id -g) $HOME/
+export KUBECONFIG=$HOME/admin.conf
+
+kubectl get nodes
+
+kubectl get pods --all-namespaces
+
+kubectl apply --filename https://git.io/weave-kube-1.6
+
+kubectl get nodes
+
+kubectl get pods --all-namespaces
+
+kubectl get nodes
+
