@@ -59,7 +59,9 @@ Direct your favorite browser to for instance https://localhost:8080/
 ## Docker
 use Dockerfile
 If you want to use https then you can alter the CMD option in Dockerfile to use https:
+<code>
 CMD ["./build/http_examples"]
+</code>
 
 ### builds the image from the Dockerfile. -t specifies ‘name:tag'
 docker build -t  helloworld:v1 .
